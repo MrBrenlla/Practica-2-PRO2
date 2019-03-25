@@ -14,8 +14,6 @@ const
 
 type
 	tPosL=^tNodo;
-	tPartyName=string;
-	tNumVotes=word;
 	tItem=record
 		partyname:tPartyName;
 		numvotes:tNumVotes;
