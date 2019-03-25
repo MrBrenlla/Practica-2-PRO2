@@ -9,6 +9,9 @@ unit PartyList;
 
 interface
 
+uses SharedTypes;
+
+
 const
 	NULL=nil;
 
