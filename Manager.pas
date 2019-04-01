@@ -124,3 +124,147 @@ implementation
 			deleteAtPositionC(firstC(manager),manager);
 		END;
 	END;
+
+
+	function vote(VAR list:tList;party:string):boolean;
+
+{
+Obxectivo: Engadir un voto ao partido selecionado
+Entradas: list, é a lista na que se atopa o partidos ao que se quere engadir un voto
+          party, é o partido ao que se quere engadir un voto
+Saidas: list, a lista introducida modificada co voto que se engadiu
+Postcondicións: se o partido no existe satara Error e o voto contarase como NULLVOTE 
+}
+
+
+VAR
+	position:tPosL;
+	votes:integer;
+	item:tItem;
+	comprobador:boolean;
+
+BEGIN
+	comprobador:=TRUE;
+	position:=findItem(party,list);
+        if position=null then BEGIN
+				 comprobador:=FALSE;
+                 position:=findItem(NULLVOTE,list);
+                 party:=NULLVOTE;
+        END;
+        item:=getItem(position,list);
+        votes:=item.numvotes+1;
+        updateVotes(votes,position,list);
+        vote:=comprobador;
+END;
+	
+	
+	
+	function voteInCenter(center:tCenterName; party:tPartyName; Var manager:tManager):boolean;
+	
+	VAR
+	itemC:tItemC;
+	position:tPosC;
+	list:tList;
+	tmp:boolean;
+	
+	BEGIN
+		position:=findItemC(center,manager);
+		itemC:=getItemC(position,manager);
+		list:=itemC.partylist;
+		tmp:=vote(list,party);
+		updateListC(list,position,manager);
+		voteInCenter:=tmp;
+	END;
+	
+		
+	
+	procedure stat(list:tList;totalvoters:integer);
+
+{
+Obxectivo: Mostrar por pantalla numero de votos e porcentaxe de votos por partido e en total da lista de partido de un centro
+Entradas: list, é a lista da que se desexan ver os datos
+          totalvoters, o número total de votantes que hai no censo 
+Saidas: Mostraranse por pantalla as estadisticas
+}
+
+	VAR
+		totalvotes,votes,nullvotes:integer;
+		percent:real;
+		position:tPosL;
+		item:tItem;
+		
+	BEGIN
+        totalvotes:=0;
+		votes:=0;
+		
+		{Facemos un reconto dos votos, separando os NULLVOTES do resto}
+		position:=first(list);
+		item:=getItem(position,list);
+		if item.partyname<>NULLVOTE then totalvotes:=totalvotes+item.numvotes  
+        else nullvotes:=item.numvotes;
+        repeat
+				position:=next(position,list);
+                item:=getItem(position,list);
+                if item.partyname<>NULLVOTE then totalvotes:=totalvotes+item.numvotes
+                else nullvotes:=item.numvotes;
+        until position=last(list);
+        
+        {Unha vez temos o reconto mostrase por pantalla o total e o porcentaxe (excepto NULLVOTES) de cada partido}
+        position:=first(list);
+        item:=getItem(position,list);
+        votes:=item.numvotes;
+        if totalvotes>0 then percent:=100*votes/totalvotes
+        else percent:=0;
+        if item.partyname<>NULLVOTE then writeln('Party ',item.partyname,' numvotes ',votes,' (',percent:0:2,'%)')
+        else writeln('Party ',item.partyname,' numvotes ',votes);
+        repeat
+				position:=next(position,list);
+                item:=getItem(position,list);
+                votes:=item.numvotes;
+                if totalvotes>0 then percent:=100*votes/totalvotes
+                else percent:=0;
+                if item.partyname<>NULLVOTE then writeln('Party ',item.partyname,' numvotes ',votes,' (',percent:0:2,'%)')
+                else writeln('Party ',item.partyname,' numvotes ',votes);
+        until position=last(list);
+        
+        {Finalmente mostramos o numero de votos o porcentaxe sobre os votantes totais}
+        totalvotes:=totalvotes+nullvotes;
+        if totalvoters>0 then percent:=100*totalvotes/totalvoters
+        else percent:=0;
+        writeln('Participation: ',totalvotes,' votes from ',totalvoters,' voters (',percent:0:2,'%)');
+	END;
+	
+	
+	
+
+	
+	procedure showStats(manager:tManager);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
