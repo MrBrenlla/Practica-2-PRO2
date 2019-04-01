@@ -10,7 +10,7 @@ type
 	tPosC=0..MAXC;
 	tItemC=record
 	    centername:tCenterName;
-		totalvotes:tNumVotes;
+		totalvoters:tNumVotes;
 		validvotes:tNumVotes;
 		partylist:tList;
 	end;
@@ -30,7 +30,6 @@ procedure deleteAtPositionC(position:tPosC;var list:tlistC);
 function getItemC(position:tPosC;list:tListC):tItemC;
 procedure updateListC(L:tList;position:tPosC;var list:tListC);
 procedure updateValidVotesC(votes:tNumVotes;position:tPosC;var list:tListC);
-procedure updateTotalVotesC(votes:tNumVotes;position:tPosC;var list:tListC);
 function findItemC(center:tCenterName;list:tListC):tPosC;
 
 implementation
@@ -238,20 +237,6 @@ Precondicións: A lista ten que estar inicializada
 Postcondicións:A orde da lista non se ve modificada }
 	begin
 		list.item[position].validvotes:=votes;
-	end;
-	
-	procedure updateTotalVotesC(votes:tNumVotes;position:tPosC;var list:tListC);
-
-{Obxectivo: modificar o número de votos totales dun partido sabendo a posición na lista
-Entradas:votes, o novo número de votos do partido que se atopa nesa posición
-         position, a posicion da lista na que se desexa eliminar o item
-         list, a lista na que se quere modifica o número de votos    
-Saidas: list, a lista de entrada modificada co novo número de votos na posición indicada
-Precondicións: A lista ten que estar inicializada
-               a posicion ten que ser unha posición valida
-Postcondicións:A orde da lista non se ve modificada }
-	begin
-		list.item[position].totalvotes:=votes;
 	end;
 	
 	
