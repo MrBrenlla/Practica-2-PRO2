@@ -242,7 +242,7 @@ Postcondicións:A orde da lista non se ve modificada }
 	
 	
 
-function findItemC(center:tCenterName;list:tListC):tPosC;
+ffunction findItemC(center:tCenterName;list:tListC):tPosC;
 
 {Obxectivo: devolver a posición de un centro nunha lista
 Entradas:center, o centro quese desexa buscar
@@ -254,14 +254,17 @@ Postcondicións:Devolverase so a posición da primeira vez que apareza o centro
 	var
 		i,pos:tPosC;
 	begin
+	if list.fin=0 then findItemC:=NULLC else begin
 		pos:=NULLC;
 		i:=0;
 		repeat
 			i:=i+1;
 			if list.item[i].centername=center then pos:=i;
-		until (list.item[i].centername=center)or(i=list.fin+1);
+		until (list.item[i].centername=center)or(i>list.fin);
 		findItemC:=pos;
+		end;
 	end;
+
 
 
 end.
