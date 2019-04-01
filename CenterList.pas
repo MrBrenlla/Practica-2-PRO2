@@ -12,7 +12,7 @@ type
 	    centername:tCenterName;
 		totalvotes:tNumVotes;
 		validvotes:tNumVotes;
-		//partylist:tList;
+		partylist:tList;
 	end;
 	tListC=record
 	item:array[1..MAXC] of tItemC;
@@ -28,8 +28,10 @@ function previousC(position:tPosC;list:tListC):tPosC;
 function insertItemC(item:tItemC;var list:tlistC):boolean;
 procedure deleteAtPositionC(position:tPosC;var list:tlistC);
 function getItemC(position:tPosC;list:tListC):tItemC;
-//procedure updateVotesC(votes:tNumVotes;position:tPosC;var list:tListC);
-//function findItemC(center:tCenterName;list:tListC):tPosC;
+procedure updateListC(L:tList;position:tPosC;var list:tListC);
+procedure updateValidVotesC(votes:tNumVotes;position:tPosC;var list:tListC);
+procedure updateTotalVotesC(votes:tNumVotes;position:tPosC;var list:tListC);
+function findItemC(center:tCenterName;list:tListC):tPosC;
 
 implementation
 
@@ -141,21 +143,25 @@ Postcondicións: Todos os elementos que estan despos da posicion na que se intro
 		a,b:boolean;
 	begin
 		if (list.fin=MAXC) then insertItemC:=FALSE
-		else BEGIN
+		else if (list.fin=0) then begin
+		list.fin:=1;
+		list.item[1]:=item;	
+		end else
+		BEGIN		
 			list.fin:=list.fin+1;
 			a:=FALSE;
 			i:=0;
-			while (not a) and (list.fin<>i+1) do begin
-				i:=i+1;	
+			while (not a) and (list.fin<>i) do begin	
+			    i:=i+1;
 				j:=1;
 				b:=FALSE;
 				while not b do begin	 
-		             if (ord(list.item[i].centername[j])>ord(item.centername[j])) then
+		             if (ord(list.item[i].centername[j])<ord(item.centername[j])) then
 		             b:=true;
 		             if (ord(list.item[i].centername[j])=ord(item.centername[j])) then
 		             j:=j+1;
-		             if (ord(list.item[i].centername[j])<ord(item.centername[j])) then
-		             a:=true;
+		             if (ord(list.item[i].centername[j])>ord(item.centername[j])) then begin
+		             a:=true;b:=true; end;
 	            end;
 	        end;
 	        n:=i;
@@ -165,9 +171,9 @@ Postcondicións: Todos os elementos que estan despos da posicion na que se intro
 				for i:=list.fin-1 downto n do
 					list.item[i+1]:=list.item[i];
 			list.item[n]:=item;
-			end;
-			insertItemC:=TRUE;
+			end;	
 		end;
+		insertItemC:=TRUE;
 	end;
 
 
@@ -206,44 +212,71 @@ Postcondicións: }
 	end;
 
 
+procedure updateListC(L:tList;position:tPosC;var list:tListC);
 
-{procedure updateVotesC(votes:tNumVotes;position:tPosC;var list:tListC);
-
-Obxectivo: modificar o número de votos de un partido sabendo a posición na lista
+{Obxectivo: modificar o número de votos de un partido sabendo a posición na lista
 Entradas:votes, o novo número de votos do partido que se atpa nesa posición
          position, a posicion da lista na que se desexa eliminar o item
          list, a lista na que se quere modifica o número de votos    
 Saidas: list, a lista de entrada modificada co novo número de votos na posición indicada
 Precondicións: A lista ten que estar inicializada
                a posicion ten que ser unha posición valida
-Postcondicións:A orde da lista non se ve modificada 
+Postcondicións:A orde da lista non se ve modificada }
 	begin
-		list.item[position].numvotes:=votes;
-	end;}
-	
-	
-	
+		list.item[position].partylist:=L;
+	end;
 
-{function findItemC(center:tCenterName;list:tListC):tPosC;
+procedure updateValidVotesC(votes:tNumVotes;position:tPosC;var list:tListC);
 
-Obxectivo: devolver a posición de un partido nunha lista
-Entradas:party, o partido quese desexa buscar
-         list, a lista na que se quere buscar o partido   
-Saidas: un tPosC coa posición do partido que se busca na lista
+{Obxectivo: modificar o número de votos validos dun partido sabendo a posición na lista
+Entradas:votes, o novo número de votos do partido que se atopa nesa posición
+         position, a posicion da lista na que se desexa cambiar o item
+         list, a lista na que se quere modifica o número de votos    
+Saidas: list, a lista de entrada modificada co novo número de votos na posición indicada
 Precondicións: A lista ten que estar inicializada
-Postcondicións:Devolverase so a posición da primeira vez que apareza o partido
-               Devolverase NULL se o partido non existe 
+               a posicion ten que ser unha posición valida
+Postcondicións:A orde da lista non se ve modificada }
+	begin
+		list.item[position].validvotes:=votes;
+	end;
+	
+	procedure updateTotalVotesC(votes:tNumVotes;position:tPosC;var list:tListC);
+
+{Obxectivo: modificar o número de votos totales dun partido sabendo a posición na lista
+Entradas:votes, o novo número de votos do partido que se atopa nesa posición
+         position, a posicion da lista na que se desexa eliminar o item
+         list, a lista na que se quere modifica o número de votos    
+Saidas: list, a lista de entrada modificada co novo número de votos na posición indicada
+Precondicións: A lista ten que estar inicializada
+               a posicion ten que ser unha posición valida
+Postcondicións:A orde da lista non se ve modificada }
+	begin
+		list.item[position].totalvotes:=votes;
+	end;
+	
+	
+	
+
+function findItemC(center:tCenterName;list:tListC):tPosC;
+
+{Obxectivo: devolver a posición de un centro nunha lista
+Entradas:center, o centro quese desexa buscar
+         list, a lista na que se quere buscar o centro  
+Saidas: un tPosC coa posición do centro que se busca na lista
+Precondicións: A lista ten que estar inicializada
+Postcondicións:Devolverase so a posición da primeira vez que apareza o centro
+               Devolverase NULL se o centro non existe }
 	var
 		i,pos:tPosC;
 	begin
-		pos:=NULL;
+		pos:=NULLC;
 		i:=0;
 		repeat
 			i:=i+1;
-			if list.item[i].partyname=party then pos:=i;
-		until (list.item[i].partyname=party)or(i=list.fin+1);
-		findItem:=pos;
-	end;}
+			if list.item[i].centername=center then pos:=i;
+		until (list.item[i].centername=center)or(i=list.fin+1);
+		findItemC:=pos;
+	end;
 
 
 end.
