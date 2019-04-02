@@ -13,30 +13,30 @@ type
 		totalvoters:tNumVotes;
 		validvotes:tNumVotes;
 		partylist:tList;
-	end;
+	END;
 	tListC=record
 	item:array[1..MAXC] of tItemC;
 	fin:integer;
-	end;
+	END;
 
-procedure createEmptyListC(var list:tListC);
+procedure createEmptyListC(VAR list:tListC);
 function isEmptyListC(list:tListC):boolean;
 function firstC(list:tListC):tPosC;
 function lastC(list:tListC):tPosC;
 function nextC(position:tPosC;list:tListC):tPosC;
 function previousC(position:tPosC;list:tListC):tPosC;
-function insertItemC(item:tItemC;var list:tlistC):boolean;
-procedure deleteAtPositionC(position:tPosC;var list:tlistC);
+function insertItemC(item:tItemC;VAR list:tlistC):boolean;
+procedure deleteAtPositionC(position:tPosC;VAR list:tlistC);
 function getItemC(position:tPosC;list:tListC):tItemC;
-procedure updateListC(L:tList;position:tPosC;var list:tListC);
-procedure updateValidVotesC(votes:tNumVotes;position:tPosC;var list:tListC);
+procedure updateListC(L:tList;position:tPosC;VAR list:tListC);
+procedure updateValidVotesC(votes:tNumVotes;position:tPosC;VAR list:tListC);
 function findItemC(center:tCenterName;list:tListC):tPosC;
 
 implementation
 
 
 
-procedure createEmptyListC(var list:tListC);
+procedure createEmptyListC(VAR list:tListC);
 
 {
 Obxectivo: Crea unha lista vacía
@@ -45,9 +45,9 @@ Saidas: list, é a mesma lista que se ten como entrada inicializada
 Postcondicións: A lista  non conten elementos
 }
 
-	begin
+	BEGIN
 		list.fin:=0;
-	end;
+	END;
 
 
 
@@ -60,10 +60,11 @@ Entradas: list, a lista que se desexa comprobar
 Saidas: Un boolean que é verdadeiro se a lista está vacía 
 Precondicións: A lista ten que estar inicializada}
 
-	begin
+
+	BEGIN
 		if list.fin=NULLC then isEmptyListC:=true
 		else isEmptyListC:=false;
-	end;
+	END;
 
 
 
@@ -75,9 +76,10 @@ Entradas: list, a lista da que se quere atopar o primeiro elemento
 Saidas: un tPosC coa posición do primeiro elemento
 Precondicións: A lista ten que estar inicializada e non ser vacia}
 
-	begin
+
+	BEGIN
 		firstC:=1
-	end;
+	END;
 
 
 
@@ -89,9 +91,10 @@ Entradas: list, a lista da que se quere atopar o primeiro elemento
 Saidas: un tPosC coa posición do primeiro elemento
 Precondicións: A lista ten que estar inicializada e non ser vacia}
 
-	begin
+
+	BEGIN
 		lastC:=list.fin
-	end;
+	END;
 
 
 
@@ -104,10 +107,11 @@ Precondicións: A lista ten que estar inicializada
                a posicion ten que ser unha posición valida
 Postcondicións: devolverase NULL se non hai seguinte}
 
-	begin
+
+	BEGIN
 		if position<list.fin then nextC:=position+1
 		else nextC:=NULLC;
-	end;
+	END;
 
 function previousC(position:tPosC;list:tListC):tPosC;
 
@@ -118,14 +122,15 @@ Precondicións: A lista ten que estar inicializada
                a posicion ten que ser unha posición valida
 Postcondicións: devolverase NULL se non hai anterior}
 
-	begin
+
+	BEGIN
 		if position>1 then previousC:=position-1
 		else previousC:=NULLC;
-	end;
+	END;
 
 
 
-function insertItemC(item:tItemC;var list:tlistC):boolean;
+function insertItemC(item:tItemC;VAR list:tlistC):boolean;
 
 {Obxectivo: Engadir un item na lista
 Entradas:item, o item a engadir
@@ -135,49 +140,50 @@ Saidas: list, a lista de entrada modificada co novo item xa engadido
         un boolean que será verdadeiro se o item se engade correctamente
 Precondicións: A lista ten que estar inicializada
                a posicion ten que ser unha posición valida ou NULL
-Postcondicións: Todos os elementos que estan despos da posicion na que se introduce poden variar de posición}
+Postcondicións: Todos os elementos que estan despos da posicion na que se introduce poden VARiar de posición}
 
-	var
+
+	VAR
 		i,j,n:integer;
 		a,b:boolean;
-	begin
+	BEGIN
 		if (list.fin=MAXC) then insertItemC:=FALSE
-		else if (list.fin=0) then begin
+		else if (list.fin=0) then BEGIN
 		list.fin:=1;
 		list.item[1]:=item;	
-		end else
+		END else
 		BEGIN		
 			list.fin:=list.fin+1;
 			a:=FALSE;
 			i:=0;
-			while (not a) and (list.fin<>i) do begin	
+			while (not a) and (list.fin<>i) do BEGIN	
 			    i:=i+1;
 				j:=1;
 				b:=FALSE;
-				while not b do begin	 
+				while not b do BEGIN	 
 		             if (ord(list.item[i].centername[j])<ord(item.centername[j])) then
 		             b:=true;
 		             if (ord(list.item[i].centername[j])=ord(item.centername[j])) then
 		             j:=j+1;
-		             if (ord(list.item[i].centername[j])>ord(item.centername[j])) then begin
-		             a:=true;b:=true; end;
-	            end;
-	        end;
+		             if (ord(list.item[i].centername[j])>ord(item.centername[j])) then BEGIN
+		             a:=true;b:=true; END;
+	            END;
+	        END;
 	        n:=i;
 	        if list.fin=n then 
 	        list.item[n]:=item
-	        else begin
+	        else BEGIN
 				for i:=list.fin-1 downto n do
 					list.item[i+1]:=list.item[i];
 			list.item[n]:=item;
-			end;	
-		end;
+			END;	
+		END;
 		insertItemC:=TRUE;
-	end;
+	END;
 
 
 
-procedure deleteAtPositionC(position:tPosC;var list:tlistC);
+procedure deleteAtPositionC(position:tPosC;VAR list:tlistC);
 
 {Obxectivo: eliminar un item na lista
 Entradas:position, a posicion da lista na que se desexa eliminar o item
@@ -185,15 +191,16 @@ Entradas:position, a posicion da lista na que se desexa eliminar o item
 Saidas: list, a lista de entrada modificada co  item xa eliminado
 Precondicións: A lista ten que estar inicializada
                a posicion ten que ser unha posición valida
-Postcondicións: Todos os elementos que estan despos da posicion na que se elimina poden variar de posición}
+Postcondicións: Todos os elementos que estan despos da posicion na que se elimina poden VARiar de posición}
 
-	var
+
+	VAR
 		i:integer;
-	begin
+	BEGIN
 		for i:=position to list.fin do
 			list.item[i]:=list.item[i+1];
 		list.fin:=list.fin-1;
-	end;
+	END;
 
 
 
@@ -206,14 +213,16 @@ Saidas: tItemC que se atopa na posicion introducida
 Precondicións: A lista ten que estar inicializada
                a posicion ten que ser unha posición valida
 Postcondicións: }
-	begin
+
+
+	BEGIN
 		getItemC:=list.item[position];
-	end;
+	END;
 
 
-procedure updateListC(L:tList;position:tPosC;var list:tListC);
+procedure updateListC(L:tList;position:tPosC;VAR list:tListC);
 
-{Obxectivo: modificar o número de votos de un partido sabendo a posición na lista
+{Obxectivo: modificar o número de votos de un partido sabENDo a posición na lista
 Entradas:votes, o novo número de votos do partido que se atpa nesa posición
          position, a posicion da lista na que se desexa eliminar o item
          list, a lista na que se quere modifica o número de votos    
@@ -221,13 +230,15 @@ Saidas: list, a lista de entrada modificada co novo número de votos na posició
 Precondicións: A lista ten que estar inicializada
                a posicion ten que ser unha posición valida
 Postcondicións:A orde da lista non se ve modificada }
-	begin
+
+
+	BEGIN
 		list.item[position].partylist:=L;
-	end;
+	END;
 
-procedure updateValidVotesC(votes:tNumVotes;position:tPosC;var list:tListC);
+procedure updateValidVotesC(votes:tNumVotes;position:tPosC;VAR list:tListC);
 
-{Obxectivo: modificar o número de votos validos dun partido sabendo a posición na lista
+{Obxectivo: modificar o número de votos validos dun partido sabENDo a posición na lista
 Entradas:votes, o novo número de votos do partido que se atopa nesa posición
          position, a posicion da lista na que se desexa cambiar o item
          list, a lista na que se quere modifica o número de votos    
@@ -235,14 +246,16 @@ Saidas: list, a lista de entrada modificada co novo número de votos na posició
 Precondicións: A lista ten que estar inicializada
                a posicion ten que ser unha posición valida
 Postcondicións:A orde da lista non se ve modificada }
-	begin
+
+
+	BEGIN
 		list.item[position].validvotes:=votes;
-	end;
+	END;
 	
 	
 	
 
-ffunction findItemC(center:tCenterName;list:tListC):tPosC;
+function findItemC(center:tCenterName;list:tListC):tPosC;
 
 {Obxectivo: devolver a posición de un centro nunha lista
 Entradas:center, o centro quese desexa buscar
@@ -251,10 +264,12 @@ Saidas: un tPosC coa posición do centro que se busca na lista
 Precondicións: A lista ten que estar inicializada
 Postcondicións:Devolverase so a posición da primeira vez que apareza o centro
                Devolverase NULL se o centro non existe }
-	var
+               
+               
+	VAR
 		i,pos:tPosC;
-	begin
-	if list.fin=0 then findItemC:=NULLC else begin
+	BEGIN
+	if list.fin=0 then findItemC:=NULLC else BEGIN
 		pos:=NULLC;
 		i:=0;
 		repeat
@@ -262,9 +277,9 @@ Postcondicións:Devolverase so a posición da primeira vez que apareza o centro
 			if list.item[i].centername=center then pos:=i;
 		until (list.item[i].centername=center)or(i>list.fin);
 		findItemC:=pos;
-		end;
-	end;
+		END;
+	END;
 
 
 
-end.
+END.

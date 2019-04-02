@@ -20,14 +20,14 @@ type
 	tItem=record
 		partyname:tPartyName;
 		numvotes:tNumVotes;
-	end;
+	END;
 	tNodo=record
 		item:tItem;
 		next:^tNodo;
-	end;
+	END;
 	tList=^tNodo;
 
-procedure createEmptyList(var list:tList);
+procedure createEmptyList(VAR list:tList);
 function isEmptyList(list:tList):boolean;
 function first(list:tList):tPosL;
 function last(list:tList):tPosL;
@@ -43,7 +43,7 @@ implementation
 
 
 
-procedure createEmptyList(var list:tList);
+procedure createEmptyList(VAR list:tList);
 
 {
 Obxectivo: Crea unha lista vacía
@@ -52,9 +52,9 @@ Saidas: list, é a mesma lista que se ten como entrada inicializada
 Postcondicións: A lista  non conten elementos
 }
 
-	begin
+	BEGIN
 		list:=NULL;
-	end;
+	END;
 
 
 
@@ -67,10 +67,10 @@ Entradas: list, a lista que se desexa comprobar
 Saidas: Un boolean que é verdadeiro se a lista está vacía 
 Precondicións: A lista ten que estar inicializada}
 
-	begin
+	BEGIN
 		if list=NULL then isEmptyList:=true
 		else isEmptyList:=false;
-	end;
+	END;
 
 
 
@@ -82,9 +82,9 @@ Entradas: list, a lista da que se quere atopar o primeiro elemento
 Saidas: un tPosL coa posición do primeiro elemento
 Precondicións: A lista ten que estar inicializada e non ser vacia}
 
-	begin
+	BEGIN
 		first:=list
-	end;
+	END;
 
 
 
@@ -99,11 +99,11 @@ Precondicións: A lista ten que estar inicializada e non ser vacia}
 VAR
 position:tPosL;
 
-	begin
+	BEGIN
 		position:=list;
 		while position^.next<>NULL do position:=position^.next;
 		last:=position;
-	end;
+	END;
 
 
 
@@ -116,10 +116,10 @@ Precondicións: A lista ten que estar inicializada
                a posicion ten que ser unha posición valida
 Postcondicións: devolverase NULL se non hai seguinte}
 
-	begin
+	BEGIN
 		if position=last(list) then next:=NULL
 		else next:=position^.next;
-	end;
+	END;
 
 function previous(position:tPosL;list:tList):tPosL;
 
@@ -133,14 +133,14 @@ Postcondicións: devolverase NULL se non hai anterior}
 VAR
 tmp:tPosL;
 
-	begin
+	BEGIN
 		if position=list then previous:=NULL {Se a posición é a primeira devolbese NULL}
 		else BEGIN
 			tmp:=list;
 			while tmp^.next<>position do tmp:=tmp^.next; {recorrese a lista ata atopar a posición de inserción}
 			previous:=tmp;
-		end;
-	end;
+		END;
+	END;
 
 
 
@@ -153,12 +153,12 @@ Saidas: list, a lista de entrada modificada co novo item xa engadido
         un boolean que será verdadeiro se o item se engade correctamente
 Precondicións: A lista ten que estar inicializada
                a posicion ten que ser unha posición valida ou NULL
-Postcondicións: Todos os elementos que estan despois da posicion na que se introduce poden variar de posición}
+Postcondicións: Todos os elementos que estan despois da posicion na que se introduce poden VARiar de posición}
 
-	var
+	VAR
 	position,lastpos,tmp2:tPosL;
 	tmp:tItem;
-	begin
+	BEGIN
 
 		{Insertar item se a lista está vacía}
 		if isEmptyList(list) then BEGIN 
@@ -192,7 +192,7 @@ Postcondicións: Todos os elementos que estan despois da posicion na que se intr
 			END;
 		END;
 		insertItem:=TRUE;
-	end;
+	END;
 
 
 
@@ -204,18 +204,18 @@ Entradas:position, a posicion da lista na que se desexa eliminar o item
 Saidas: list, a lista de entrada modificada co  item xa eliminado
 Precondicións: A lista ten que estar inicializada
                a posicion ten que ser unha posición valida
-Postcondicións: Todos os elementos que estan despos da posicion na que se elimina poden variar de posición}
+Postcondicións: Todos os elementos que estan despos da posicion na que se elimina poden VARiar de posición}
 
-	var
+	VAR
 		tmp:tPosL;
-	begin
-		if position=first(list) then list:=position^.next {Se a posición a eliminar é a primeira variarase "list"}
+	BEGIN
+		if position=first(list) then list:=position^.next {Se a posición a eliminar é a primeira VARiarase "list"}
 		else BEGIN
-			tmp:=previous(position,list);{No resto dos casos so variaran os nodos}
+			tmp:=previous(position,list);{No resto dos casos so VARiaran os nodos}
 			tmp^.next:=position^.next;
 		END;
 		dispose(position);
-	end;
+	END;
 
 
 
@@ -227,15 +227,15 @@ Entradas:position, a posicion da lista na que está o item
 Saidas: tItem que se atopa na posicion introducida 
 Precondicións: A lista ten que estar inicializada
                a posicion ten que ser unha posición valida }
-	begin
+	BEGIN
 		getItem:=position^.item;
-	end;
+	END;
 
 
 
 procedure updateVotes(votes:tNumVotes;position:tPosL; list:tList);
 
-{Obxectivo: modificar o número de votos de un partido sabendo a posición na lista
+{Obxectivo: modificar o número de votos de un partido sabENDo a posición na lista
 Entradas:votes, o novo número de votos do partido que se atpa nesa posición
          position, a posicion da lista na que se desexa eliminar o item
          list, a lista na que se quere modifica o número de votos    
@@ -243,9 +243,9 @@ Saidas: list, a lista de entrada modificada co novo número de votos na posició
 Precondicións: A lista ten que estar inicializada
                a posicion ten que ser unha posición valida
 Postcondicións:A orde da lista non se ve modificada }
-	begin
+	BEGIN
 		position^.item.numvotes:=votes;
-	end;
+	END;
 	
 	
 	
@@ -261,7 +261,7 @@ Postcondicións:Devolverase so a posición da primeira vez que apareza o partido
                Devolverase NULL se o partido non existe }
 	VAR
 	position,tmp:tPosL;
-	begin
+	BEGIN
 	if not(isEmptyList(list)) then BEGIN {comprobase que a lista non sexa vacía}
 		tmp:=last(list);
 		position:=first(list);
@@ -274,4 +274,4 @@ Postcondicións:Devolverase so a posición da primeira vez que apareza o partido
 	END;
 
 
-end.
+END.

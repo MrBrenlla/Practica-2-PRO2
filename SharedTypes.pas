@@ -20,4 +20,4 @@ type
 	
 	implementation
 	
-end.
+END.

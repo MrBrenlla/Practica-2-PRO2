@@ -2,7 +2,7 @@ unit RequestQueue;
 
 interface
 
-const
+	const
 	MAX=25;
 	NULL=0;
 	BLANKVOTE='B';
@@ -10,72 +10,91 @@ const
 
 type
 	tPosQ=0..MAX;
-	{tPartyName=string;
-	tNumVotes=word;}
-  tRequest=char;
+	tRequest=char;
 	tItemQ=record
-	request:tRequest;
-    code:string;
-    param1:string;
-    param2:string;
-	end;
+		request:tRequest;
+		code:string;
+		param1:string;
+		param2:string;
+	END;
 	tQueue=record
-	item:array[1..MAX] of tItemQ;
-	ini:tPosQ;
-	fin:tPosQ;
-	end;
+		item:array[1..MAX] of tItemQ;
+		ini:tPosQ;
+		fin:tPosQ;
+	END;
 	
-procedure createEmptyQueue(var Q:tQueue);
+procedure createEmptyQueue(VAR Q:tQueue);
 function isEmptyQueue(Q:tQueue):boolean;
-function enqueue(var Q:tQueue;I:tItemQ):Boolean;
+function enqueue(VAR Q:tQueue;I:tItemQ):Boolean;
 function front(Q:tQueue):tItemQ;
-procedure dequeue(var Q:tQueue);
+procedure dequeue(VAR Q:tQueue);
+
+
 
 implementation
 
+
 function sumaUno(p:tPosQ):tPosQ;
-begin
-if p<>MAX then sumaUno:=p+1
-else sumaUno:=0;
-end;
+
+BEGIN
+	if p<>MAX then sumaUno:=p+1
+	else sumaUno:=0;
+END;
+
+
 function restaUno(p:tPosQ):tPosQ;
-begin
-if p<>0 then restaUno:=p-1
-else restaUno:=MAX;
-end;
-procedure createEmptyQueue(var Q:tQueue);
+
+BEGIN
+	if p<>0 then restaUno:=p-1
+	else restaUno:=MAX;
+END;
+
+
+procedure createEmptyQueue(VAR Q:tQueue);
+
 {Crea una cola vacia
-* PostCD:La cola queda inicializada y vacia
-* }
-begin
-Q.ini:=1;
-Q.fin:=0;
-end;
+ PostCD:La cola queda inicializada y vacia
+ }
+BEGIN
+	Q.ini:=1;
+	Q.fin:=0;
+END;
+
 
 function isEmptyQueue(Q:tQueue):boolean;
-begin
-isEmptyQueue:=(Q.fin=restaUno(Q.ini));
-end;
 
-function enqueue(var Q:tQueue;I:tItemQ):Boolean;
-begin
-if Q.fin=restaUno(restaUno(Q.ini)) then enqueue:=FALSE
-	else begin
+	BEGIN
+	isEmptyQueue:=(Q.fin=restaUno(Q.ini));
+END;
+
+
+
+function enqueue(VAR Q:tQueue;I:tItemQ):Boolean;
+
+BEGIN
+	if Q.fin=restaUno(restaUno(Q.ini)) then enqueue:=FALSE
+	else BEGIN
 		Q.fin:=sumaUno(Q.fin);
 		Q.item[Q.fin]:=I;
 		enqueue:=TRUE;
-	end;
-end;
+	END;
+END;
+
+
 
 function front(Q:tQueue):tItemQ;
-begin
-front:=Q.item[Q.ini];
-end;
 
-procedure dequeue(var Q:tQueue);
-begin
-Q.ini:=sumaUno(Q.ini);
-end;
+BEGIN
+	front:=Q.item[Q.ini];
+END;
 
 
-end.
+
+procedure dequeue(VAR Q:tQueue);
+
+BEGIN
+	Q.ini:=sumaUno(Q.ini);
+END;
+
+
+END.

@@ -12,13 +12,21 @@ program main;
 
 uses sysutils,SharedTypes,RequestQueue,Manager;
 
-procedure CREATE(center,voters:string;m:tManager);
+procedure CREATE(center,voters:string;manager:tManager);
 
-begin
-if insertCenter(center,StrToInt(voters),m) then
-writeln('* Create: center ',center,' totalvoters ',voters)
-else writeln('+ Error: Create not possible');
-end;
+BEGIN
+	if insertCenter(center,StrToInt(voters),manager) then
+	writeln('* Create: center ',center,' totalvoters ',voters)
+	else writeln('+ Error: Create not possible');
+END;
+
+
+procedure STATS(manager:tManager);
+
+BEGIN
+	showStats(manager);
+END;
+
 
 procedure readTasks(filename:string);
 
@@ -28,7 +36,7 @@ VAR
    //code       : STRING;
    //param1,param2,request:string;
    q:tQueue;
-   M:tManager;
+   manager:tManager;
    iq:tItemQ;
 
 BEGIN
@@ -43,11 +51,11 @@ BEGIN
       writeln('**** Error reading '+filename);
       halt(1)
    END;
-createEmptyManager(M);
+createEmptyManager(manager);
 createEmptyQueue(q);
    WHILE NOT EOF(usersFile) DO
    BEGIN
-      { Read a line in the file and save it in different variables}
+      { Read a line in the file and save it in different VARiables}
       ReadLn(usersFile, line);
       iq.code := trim(copy(line,1,2));
       iq.request:= line[4];
@@ -65,27 +73,28 @@ createEmptyQueue(q);
    Close(usersFile);
 
     WHILE not isEmptyQueue(q) do
-    begin
+    BEGIN
       iq:=front(q);
 	  {CHANGE writeln for the corresponding operation}
 	  writeln('********************');
 	  writeln(iq.code, ' ', iq.request, ': ', iq.param1, ' ',iq.param2);
 	  writeln;
 	  case iq.request of 
-	  'C':CREATE(iq.param1,iq.param2,M);
-	  'N'://NEW();
-	  ;
-	  'V'://VOTE();
-	  ;
-	  'R'://REMOVE();
-	  ;
-	  'S'://STATS();
-	  ;
-	  end;
+	  'C':CREATE(iq.param1,iq.param2,manager);
+	  
+	  //'N':NEW();
+	  
+	  //'V':VOTE();
+	  
+	  //'R':REMOVE();
+	
+	  'S':STATS(manager);
+	  
+	  END;
 	  
 	  //writeln;
 	  dequeue(q);
-	 end;
+	 END;
 END;
 
 
