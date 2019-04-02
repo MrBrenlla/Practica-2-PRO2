@@ -43,6 +43,11 @@ BEGIN
 	itemC.totalvoters:=voters;
 	itemC.validvotes:=0;
 	createEmptyList(itemC.partylist);
+	item.partyname:=BLANKVOTE;
+	item.numvotes:=0;
+	insertItem(item,itemC.partylist);
+	item.partyname:=NULLVOTE;
+	insertItem(item,itemC.partylist);
 	insertCenter:=insertItemC(itemC,manager);
 END;
 
@@ -173,6 +178,7 @@ BEGIN
 	list:=itemC.partylist;
 	tmp:=vote(list,party);
 	updateListC(list,position,manager);
+	if tmp then updateValidVotesC(itemC.validvotes+1,position,manager);
 	voteInCenter:=tmp;
 END;
 
