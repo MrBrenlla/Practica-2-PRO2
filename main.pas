@@ -12,7 +12,7 @@ program main;
 
 uses sysutils,SharedTypes,RequestQueue,Manager;
 
-procedure CREATE(center,voters:string;manager:tManager);
+procedure CREATE(center,voters:string;VAR manager:tManager);
 
 BEGIN
 	if insertCenter(center,StrToInt(voters),manager) then
@@ -64,11 +64,11 @@ createEmptyQueue(q);
                                        { from position i }
       iq.param2 := trim(copy(line,15,10));
       
-      //writeln(iq.code, ' ', iq.request, ': ', iq.param1, ' ',iq.param2);
-      writeln(enqueue(q,iq));
-      {enqueue(q,iq);}
+      enqueue(q,iq);
       	  
     END;
+    
+    createEmptyManager(manager);
    
    Close(usersFile);
 
@@ -77,19 +77,25 @@ createEmptyQueue(q);
       iq:=front(q);
 	  {CHANGE writeln for the corresponding operation}
 	  writeln('********************');
-	  writeln(iq.code, ' ', iq.request, ': ', iq.param1, ' ',iq.param2);
-	  writeln;
 	  case iq.request of 
-	  'C':CREATE(iq.param1,iq.param2,manager);
-	  
+	  'C':BEGIN
+		writeln(iq.code, ' ', iq.request, ': center ', iq.param1, ' totalvoters ',iq.param2);
+		writeln;
+		CREATE(iq.param1,iq.param2,manager);
+		END;
+		
 	  //'N':NEW();
 	  
 	  //'V':VOTE();
 	  
 	  //'R':REMOVE();
 	
-	  'S':STATS(manager);
-	  
+	  'S':BEGIN
+		writeln(iq.code, ' ', iq.request, ':');
+		writeln;
+		STATS(manager);
+		END;
+		
 	  END;
 	  
 	  //writeln;

@@ -163,32 +163,38 @@ Postcondicións: Todos os elementos que estan despois da posicion na que se intr
 		{Insertar item se a lista está vacía}
 		if isEmptyList(list) then BEGIN 
 			new(list);
-			list^.item:=item
+			list^.item:=item;
+			list^.next:=NULL;
 		END
 			
 		{Insertar item se a lista non está vacía}
 		else BEGIN
+			new(tmp2);
 			position:=first(list);
 			tmp:=getItem(position,list);
 			if tmp.partyname>=item.partyname then BEGIN {Se o primeiro elemento xa é maior que o elemento a engadir}
-				new(tmp2);
 				tmp2^.next:=list;
 				tmp2^.item:=item;
 				list:=tmp2;
 			END
 			else BEGIN {Se o primeiro non é maior recorrese a lista ata atopar o primeiro que sexa maior que el}
 				lastpos:=last(list);
-				tmp:=getItem(next(position,list),list); 
-				if lastpos^.item.partyname<=item.partyname then position:=lastpos {Se o ultimo elemento é menor engadese ao final da lista}
-				else
-					while (tmp.partyname<=item.partyname) and (position^.next<>lastpos) do BEGIN {Se o ultimo elemento non é menor buscase o ultimo que o sexa}
-						position:=position^.next;
-						tmp:=getItem(next(position,list),list); 
+				if lastpos^.item.partyname<=item.partyname then BEGIN
+					lastpos^.next:=tmp2;
+					tmp2^.next:=NULL;
+					tmp2^.item:=item;
+				END
+				else BEGIN
+					position:=next(position,list);
+					tmp:=getItem(position,list);
+					while (tmp.partyname<item.partyname) and (next(position,list)<>lastpos) do BEGIN
+						position:=next(position,list);
+						tmp:=getItem(position,list);
 					END;
-				new(tmp2);
-				tmp2^.next:=position^.next;
-				tmp2^.item:=item;
-				position^.next:=tmp2;
+					tmp2^.next:=position^.next;
+					position^.next:=tmp2;
+					tmp2^.item:=item;
+				END;
 			END;
 		END;
 		insertItem:=TRUE;

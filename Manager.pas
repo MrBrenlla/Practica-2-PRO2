@@ -20,7 +20,7 @@ function insertCenter(center:tCenterName;voters:tNumVotes; VAR manager:tManager)
 function insertPartyInCenter(center:tCenterName;party:tPartyName;manager:tManager):boolean;
 function deleteCenters(VAR manager:tManager):integer;
 procedure deletemanager(VAR manager:tManager);
-procedure showStats(manager:tManager);
+procedure showStats( manager:tManager);
 function voteInCenter(center:tCenterName; party:tPartyName; Var manager:tManager):boolean;
 
 implementation
@@ -37,18 +37,23 @@ function insertCenter(center:tCenterName;voters:tNumVotes; VAR manager:tManager)
 
 VAR
 itemC:tItemC;
+item:tItem;
+list:tList;
+tmp:boolean;
 
 BEGIN
 	itemC.centername:=center;
 	itemC.totalvoters:=voters;
 	itemC.validvotes:=0;
-	createEmptyList(itemC.partylist);
+	createEmptyList(list);
 	item.partyname:=BLANKVOTE;
 	item.numvotes:=0;
-	insertItem(item,itemC.partylist);
+	insertItem(item,list);
 	item.partyname:=NULLVOTE;
-	insertItem(item,itemC.partylist);
-	insertCenter:=insertItemC(itemC,manager);
+	insertItem(item,list);
+	itemC.partylist:=list;
+	tmp:=insertItemC(itemC,manager);
+	insertCenter:=tmp;
 END;
 
 
@@ -184,7 +189,7 @@ END;
 
 	
 
-procedure stat(list:tList;totalvoters:integer);
+procedure stat(list:tList;totalvoters:integer;center:string);
 
 {
 Obxectivo: Mostrar por pantalla numero de votos e porcentaxe de votos por partido e en total da lista de partido de un centro
@@ -202,6 +207,8 @@ VAR
 BEGIN
 	totalvotes:=0;
 	votes:=0;
+	writeln('Center ',center);
+	writeln;
 	
 	{Facemos un reconto dos votos, separando os NULLVOTES do resto}
 	position:=first(list);
@@ -238,13 +245,14 @@ BEGIN
 	if totalvoters>0 then percent:=100*totalvotes/totalvoters
 	else percent:=0;
 	writeln('Participation: ',totalvotes,' votes from ',totalvoters,' voters (',percent:0:2,'%)');
+	writeln;
 END;
 
 
 
 
 
-procedure showStats(manager:tManager);
+procedure showStats( manager:tManager);
 
 VAR
 	itemC:tItemC;
@@ -258,12 +266,12 @@ BEGIN
 		while position<>lastest do BEGIN
 			itemC:=getItemC(position,manager);
 			list:=itemC.partylist;
-			stat(list,itemC.totalvoters);
+			stat(list,itemC.totalvoters,itemC.centername);
 			position:=nextC(position,manager);
 		END;
 		itemC:=getItemC(position,manager);
 		list:=itemC.partylist;
-		stat(list,itemC.totalvoters);
+		stat(list,itemC.totalvoters,itemC.centername);
 	END;
 END;
 
