@@ -17,7 +17,7 @@ type
 
 procedure createEmptyManager(VAR manager:tManager);
 function insertCenter(center:tCenterName;voters:tNumVotes; VAR manager:tManager):boolean;
-function insertPartyInCenter(center:tCenterName;party:tPartyName;manager:tManager):boolean;
+function insertPartyInCenter(center:tCenterName;party:tPartyName;VAR manager:tManager):boolean;
 function deleteCenters(VAR manager:tManager):integer;
 procedure deletemanager(VAR manager:tManager);
 procedure showStats( manager:tManager);
@@ -94,7 +94,7 @@ END;
 	
 
 
-function insertPartyInCenter(center:tCenterName;party:tPartyName;manager:tManager):boolean;
+function insertPartyInCenter(center:tCenterName;party:tPartyName;VAR manager:tManager):boolean;
 
 VAR
 	position:tPosC;
@@ -159,8 +159,8 @@ BEGIN
 		if position=null then BEGIN
 				 comprobador:=FALSE;
 				 position:=findItem(NULLVOTE,list);
-				 party:=NULLVOTE;
 		END;
+		if party=NULLVOTE then comprobador:=FALSE;
 		item:=getItem(position,list);
 		votes:=item.numvotes+1;
 		updateVotes(votes,position,list);

@@ -156,7 +156,7 @@ Precondicións: A lista ten que estar inicializada
 Postcondicións: Todos os elementos que estan despois da posicion na que se introduce poden VARiar de posición}
 
 	VAR
-	position,lastpos,tmp2:tPosL;
+	position,position2,lastpos,tmp2:tPosL;
 	tmp:tItem;
 	BEGIN
 
@@ -185,11 +185,12 @@ Postcondicións: Todos os elementos que estan despois da posicion na que se intr
 					tmp2^.item:=item;
 				END
 				else BEGIN
-					position:=next(position,list);
-					tmp:=getItem(position,list);
-					while (tmp.partyname<item.partyname) and (next(position,list)<>lastpos) do BEGIN
-						position:=next(position,list);
-						tmp:=getItem(position,list);
+					position2:=next(position,list);
+					tmp:=getItem(next(position,list),list);
+					while (tmp.partyname<item.partyname) and (position2<>lastpos) do BEGIN
+						position:=position2;
+						position2:=next(position,list);
+						tmp:=getItem(position2,list);
 					END;
 					tmp2^.next:=position^.next;
 					position^.next:=tmp2;

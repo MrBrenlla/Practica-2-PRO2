@@ -21,11 +21,26 @@ BEGIN
 END;
 
 
+
 procedure STATS(manager:tManager);
 
 BEGIN
 	showStats(manager);
 END;
+
+
+
+procedure NEW(center:string;party:string;VAR manager:tManager);
+
+VAR
+	tmp:boolean;
+	
+BEGIN
+	tmp:=insertPartyInCenter(center,party,manager);
+	if tmp then writeln('* New: center ',center,' party ',party)
+	else writeln('+ Error: New not possible');
+END;
+	
 
 
 procedure readTasks(filename:string);
@@ -84,7 +99,11 @@ createEmptyQueue(q);
 		CREATE(iq.param1,iq.param2,manager);
 		END;
 		
-	  //'N':NEW();
+	  'N':BEGIN
+		writeln(iq.code, ' ', iq.request, ': center ', iq.param1, ' party ',iq.param2);
+		writeln;
+		new(iq.param1,iq.param2,manager);
+		END;
 	  
 	  //'V':VOTE();
 	  
