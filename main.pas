@@ -54,7 +54,7 @@ END;
 procedure REMOVE(VAR manager:tManager);
 	
 BEGIN
-deleteCenters(manager);	
+	if deleteCenters(manager)=0 then writeln('* Remove: no centers removed');	
 END;
 
 
@@ -140,10 +140,9 @@ createEmptyQueue(q);
 		END;
 		
 	  END;
-	  
-	  //writeln;
 	  dequeue(q);
 	 END;
+	deletemanager(manager);
 END;
 
 

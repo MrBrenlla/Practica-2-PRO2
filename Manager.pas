@@ -140,8 +140,10 @@ BEGIN
 	while not isEmptyListC(manager) do BEGIN
 		itemC:=getItemC(firstC(manager),manager);
 		list:=itemC.partylist;
-		tmp:=first(list);
-		while not isEmptyList(list) do deleteAtPosition(tmp,list);
+		while not isEmptyList(list) do BEGIN
+			tmp:=first(list);
+			deleteAtPosition(tmp,list);
+		END;
 		deleteAtPositionC(firstC(manager),manager);
 	END;
 END;
