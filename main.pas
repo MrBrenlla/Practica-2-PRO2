@@ -30,6 +30,14 @@ END;
 
 
 
+procedure VOTES(center,party:string;VAR manager:tManager);
+begin
+ if voteInCenter(center,party,manager) then writeln('* Vote: center ',center,' party ',party)
+ else writeln('+ Error: Vote not possible. Party ',party,' not found in center ',center,'. NULLVOTE');
+end;
+
+
+
 procedure NEW(center:string;party:string;VAR manager:tManager);
 
 VAR
@@ -41,11 +49,14 @@ BEGIN
 	else writeln('+ Error: New not possible');
 END;
 	
-procedure VOTES(center,party:string;VAR manager:tManager);
-begin
- if voteInCenter(center,party,manager) then writeln('* Vote: center ',center,' party ',party)
- else writeln('+ Error: Vote not possible. Party ',party,' not found in center ',center,'. NULLVOTE');
-end;
+
+
+procedure REMOVE(VAR manager:tManager);
+	
+BEGIN
+deleteCenters(manager);	
+END;
+
 
 
 procedure readTasks(filename:string);
@@ -115,8 +126,12 @@ createEmptyQueue(q);
 		writeln;
 		VOTES(iq.param1,iq.param2,manager);
 		END;
-		
-	  //'R':REMOVE();
+	  
+	  'R':BEGIN
+		writeln(iq.code, ' ', iq.request, ':');
+		writeln;
+		REMOVE(manager);
+		END;
 	
 	  'S':BEGIN
 		writeln(iq.code, ' ', iq.request, ':');
