@@ -221,7 +221,6 @@ BEGIN
 	totalvotes:=0;
 	votes:=0;
 	writeln('Center ',center);
-	writeln;
 	
 	{Facemos un reconto dos votos, separando os NULLVOTES do resto}
 	position:=first(list);
