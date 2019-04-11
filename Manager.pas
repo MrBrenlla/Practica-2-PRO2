@@ -72,7 +72,7 @@ BEGIN
 	if not isEmptyListC(manager) then BEGIN
 		itemC:=getItemC(firstC(manager),manager);
 		while (itemC.validvotes=0) and comprobador do BEGIN
-			writeln('* Remove: ',itemC.centername);
+			writeln('* Remove: center ',itemC.centername);
 			while not isEmptyList(itemC.partylist) do BEGIN
 				tmp2:=first(itemC.partylist);
 				deleteAtPosition(tmp2,itemC.partylist);
@@ -88,7 +88,7 @@ BEGIN
 				tmp:=nextC(position,manager);
 				itemC:=getItemC(tmp,manager);
 				if (itemC.validvotes=0)  then BEGIN
-					writeln('* Remove: ',itemC.centername);
+					writeln('* Remove: center ',itemC.centername);
 					while not isEmptyList(itemC.partylist) do BEGIN
 						tmp2:=first(itemC.partylist);
 						deleteAtPosition(tmp2,itemC.partylist);
