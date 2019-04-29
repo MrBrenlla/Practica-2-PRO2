@@ -82,9 +82,9 @@ END;
 
 procedure REMOVE(VAR manager:tManager);
 {
-Obxectivo: Eliminanse todos os elemntos do tManager
-Entradas: manager, o tManager a vaciar
-Saidas:o tManager vacío
+Obxectivo: Eliminanse todos os centros do tManager con 0 votos validos
+Entradas: manager, o tManager a modificar
+Saidas:o tManager modificado
 }
 	
 BEGIN
