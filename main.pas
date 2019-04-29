@@ -52,6 +52,11 @@ END;
 
 
 procedure REMOVE(VAR manager:tManager);
+{
+Obxectivo: Eliminanse todos os elemntos do tManager
+Entradas: manager, o tManager a vaciar
+Saidas:o tManager vacío
+}
 	
 BEGIN
 	if deleteCenters(manager)=0 then writeln('* Remove: no centers removed');	
