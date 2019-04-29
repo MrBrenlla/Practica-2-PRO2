@@ -146,7 +146,7 @@ tmp:tPosL;
 
 function insertItem(item:tItem;VAR list:tlist):boolean;
 
-{Obxectivo: Engadir un item na lista
+{Obxectivo: Engadir un item na lista na posición correspondente, tendo en conta a ordenación alfabetica do nome do partido
 Entradas:item, o item a engadir
          list, a lista na que se quere engadir o item    
 Saidas: list, a lista de entrada modificada co novo item xa engadido
@@ -179,15 +179,15 @@ Postcondicións: Todos os elementos que estan despois da posicion na que se intr
 			END
 			else BEGIN {Se o primeiro non é maior recorrese a lista ata atopar o primeiro que sexa maior que el}
 				lastpos:=last(list);
-				if lastpos^.item.partyname<=item.partyname then BEGIN
+				if lastpos^.item.partyname<=item.partyname then BEGIN {Comprobamos se o item a engadir é maior ao último elemento}
 					lastpos^.next:=tmp2;
 					tmp2^.next:=NULL;
 					tmp2^.item:=item;
 				END
-				else BEGIN
+				else BEGIN {Se o item non é menor que o primeiro ou maior que o ultimo recorrese a lista ata atopar a posición de inserción}
 					position2:=next(position,list);
 					tmp:=getItem(next(position,list),list);
-					while (tmp.partyname<item.partyname) and (position2<>lastpos) do BEGIN
+					while (tmp.partyname<item.partyname) and (position2<>lastpos) do BEGIN 
 						position:=position2;
 						position2:=next(position,list);
 						tmp:=getItem(position2,list);

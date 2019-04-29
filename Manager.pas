@@ -27,13 +27,31 @@ implementation
 
 
 procedure createEmptyManager(VAR Manager:tManager);
+{
+Obxectivo: inicializa un tManager
+Entradas: Manager, o tManager a inicializar    
+Saidas: o tManager inicializado
+Postcondicións: o tManager non contén elementos
+}
 
 BEGIN
 	createEmptyListC(Manager);
 END;
 
 
+
 function insertCenter(center:tCenterName;voters:tNumVotes; VAR manager:tManager):boolean;
+{
+Obxectivo:Insertar un novo centro de forma ordenada no tManager 
+Entradas: center, o nome do centro electoral a insertar
+		  voters, o numero de votantes no censo electoral
+		  manager, o tManager no que se quere incorporar o centro
+Saidas: o manager co novo centro electoral insertado
+		un boolean que indica se a inserción se produciu correctamente
+Postcondicións: o campo validvotes do novo centro queda inicializado a 0
+				os centros que se atopen despois do que se inserta poden modificar a sua posición
+				o centro terá inicializados o partido NULLVOTE e BLANKVOTE
+}
 
 VAR
 itemC:tItemC;
@@ -42,22 +60,30 @@ list:tList;
 tmp:boolean;
 
 BEGIN
-	itemC.centername:=center;
+	itemC.centername:=center; {Creamos o tItemC do centro}
 	itemC.totalvoters:=voters;
 	itemC.validvotes:=0;
-	createEmptyList(list);
+	createEmptyList(list); {Inicializamos a lista de partidos do centro e insertamos NULLVOTE e BLANKVOTE}
 	item.partyname:=BLANKVOTE;
 	item.numvotes:=0;
 	insertItem(item,list);
 	item.partyname:=NULLVOTE;
-	insertItem(item,list);
+	insertItem(item,list);{Insertamos a lista de partidos no tItemC}
 	itemC.partylist:=list;
-	tmp:=insertItemC(itemC,manager);
+	tmp:=insertItemC(itemC,manager);{insertamos itemC en manager}
 	insertCenter:=tmp;
 END;
 
 
+
 function deleteCenters(VAR manager:tManager):integer;
+{
+Obxectivo:Eliminar os centros que teña 0 votos validos 
+Entradas: manager, o tManager a modificar   
+Saidas: o tManager modificado
+		un integer co número de centros eliminados
+Postcondicións: a lista de partidos do centro tamén será eliminada 
+}
 
 VAR
 	position,tmp:tPosC;
@@ -71,9 +97,9 @@ BEGIN
 	cont:=0;
 	if not isEmptyListC(manager) then BEGIN
 		itemC:=getItemC(firstC(manager),manager);
-		while (itemC.validvotes=0) and comprobador do BEGIN
+		while (itemC.validvotes=0) and comprobador do BEGIN {cromprobase o primeiro elemento e eliminase ata que o primeiro teña un número de votos validos diferente de 0, ou no seu defecto ata vaciar a lista}
 			writeln('* Remove: ',itemC.centername);
-			while not isEmptyList(itemC.partylist) do BEGIN
+			while not isEmptyList(itemC.partylist) do BEGIN{eliminase a lista de partidos do centro}
 				tmp2:=first(itemC.partylist);
 				deleteAtPosition(tmp2,itemC.partylist);
 			END;
@@ -82,7 +108,7 @@ BEGIN
 			else Comprobador:=FALSE;
 			cont:=cont+1;
 		END;
-		if comprobador then BEGIN
+		if comprobador then BEGIN {Se non se vacía a lista segeuese recorrendo a lista en busca de elementos a eliminar}
 			position:=firstC(manager);
 			while position<>lastC(manager) do BEGIN
 				tmp:=nextC(position,manager);
@@ -106,12 +132,22 @@ END;
 
 
 function insertPartyInCenter(center:tCenterName;party:tPartyName;VAR manager:tManager):boolean;
+{
+Obxectivo: Insertar un novo partido nun centro
+Entradas: center, o centro no que se quere incluir o partido
+		  party, o nome do partido a engadir
+		  manager, o tManager onde se atopa o centro
+Saidas: o tManager modificado
+		un boolean que será TRUE se a inserción foi correcta
+Postcondicións: o número de votos do partido será 0
+}
 
 VAR
 	position:tPosC;
 	itemC:tItemC;
 	list:tList;
 	item:tItem;
+	tmp: boolean;
 
 BEGIN
 	position:=findItemC(center,manager);
@@ -121,15 +157,20 @@ BEGIN
 		list:=itemC.partylist;
 		item.partyname:=party;
 		item.numvotes:=0;
-		insertItem(item,list);
+		tmp:=insertItem(item,list);
 		updateListC(list,position,manager);
-		insertPartyInCenter:=TRUE;
+		insertPartyInCenter:=tmp;
 	END;
 END;
 
 
 
 procedure deletemanager(VAR manager:tManager);
+{
+Obxectivo:Eliminar todos os elementos do tManager
+Entradas:manager, o tManager a vaciar      
+Saidas: o tManager vacío
+}
 
 VAR
 	itemC:tItemC;
@@ -149,14 +190,17 @@ BEGIN
 END;
 
 
+
 function vote(VAR list:tList;party:string):boolean;
 
 {
+Función auxiliar
 Obxectivo: Engadir un voto ao partido selecionado
-Entradas: list, é a lista na que se atopa o partidos ao que se quere engadir un voto
+Entradas: list, é a lista na que se atopa o partido ao que se quere engadir un voto
 		  party, é o partido ao que se quere engadir un voto
 Saidas: list, a lista introducida modificada co voto que se engadiu
-Postcondicións: se o partido no existe satara Error e o voto contarase como NULLVOTE 
+		un boolean que será FALSE se o voto é para un partido inexistente
+Postcondicións: se o partido no existe o voto contarase como NULLVOTE 
 }
 
 
@@ -173,7 +217,6 @@ BEGIN
 				 comprobador:=FALSE;
 				 position:=findItem(NULLVOTE,list);
 		END;
-		if party=NULLVOTE then comprobador:=FALSE;
 		item:=getItem(position,list);
 		votes:=item.numvotes+1;
 		updateVotes(votes,position,list);
@@ -183,6 +226,15 @@ END;
 	
 
 function voteInCenter(center:tCenterName; party:tPartyName; Var manager:tManager):boolean;
+{
+Obxectivo: aumenta en un o número de votos de un partido en un centro electoral
+Entradas: center, o centro no que se atopa o partido ao que se quere engadir un voto
+		  party, é o partido ao que se quere engadir un voto
+Saidas: list, a lista introducida modificada co voto que se engadiu
+		un boolean que será FALSE se o voto é para un partido inexistente
+Postcondicións: se o partido no existe o voto contarase como NULLVOTE
+Precondicións: O centro ten que ser valido 
+}
 
 VAR
 	itemC:tItemC;
@@ -207,8 +259,7 @@ procedure stat(list:tList;totalvoters:integer;center:string);
 {
 Obxectivo: Mostrar por pantalla numero de votos e porcentaxe de votos por partido e en total da lista de partido de un centro
 Entradas: list, é a lista da que se desexan ver os datos
-		  totalvoters, o número total de votantes que hai no censo 
-Saidas: Mostraranse por pantalla as estadisticas
+		  totalvoters, o número total de votantes que hai no censo
 }
 
 VAR
@@ -234,7 +285,7 @@ BEGIN
 			else nullvotes:=item.numvotes;
 	until position=last(list);
 	
-	{Unha vez temos o reconto mostrase por pantalla o total e o porcentaxe (excepto NULLVOTES) de cada partido}
+	{Unha vez temos o reconto mostrase por pantalla o total e o porcentaxe(excepto NULLVOTES) de cada partido}
 	position:=first(list);
 	item:=getItem(position,list);
 	votes:=item.numvotes;
@@ -265,6 +316,10 @@ END;
 
 
 procedure showStats( manager:tManager);
+{
+Obxectivo: Mostrar por pantalla numero de votos e porcentaxe de votos por partido e en total da lista de partido de cada centro
+Entradas: Manager, o tManager do que se queren mostrar as estadisticas
+}
 
 VAR
 	itemC:tItemC;

@@ -5,6 +5,8 @@ AUTHOR 2: Javier González Rodríguez
 DATE: 
 }
 
+{Aqui atopanse os diversos tipos de variables e constantes que serán utilizadas durante todo o código sen variacións.}
+
 unit SharedTypes;
 
 interface
