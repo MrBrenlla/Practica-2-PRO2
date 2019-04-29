@@ -145,17 +145,23 @@ Postcondicións: Todos os elementos que estan despos da posicion na que se intro
 		i,j,n:integer;
 		a,b:boolean;
 	BEGIN
+	
+	    {Comprobacion de se a lista esta chea}
 		if (list.fin=MAXC) then insertItemC:=FALSE
+		
+		{Caso de lista vacia}
 		else if (list.fin=0) then BEGIN
 		list.fin:=1;
 		list.item[1]:=item;	
 		insertItemC:=TRUE;
 		END else
+		
+		{Caso de lista non vacia}
 		BEGIN		
 			list.fin:=list.fin+1;
 			a:=FALSE;
 			i:=0;
-			while (not a) and (list.fin<>i) do BEGIN	
+			while (not a) and (list.fin<>i) do BEGIN	{Buscase o primeiro elemento da lista que e maior que o elemento a engadir}
 			    i:=i+1;
 				j:=1;
 				b:=FALSE;
@@ -169,10 +175,11 @@ Postcondicións: Todos os elementos que estan despos da posicion na que se intro
 	            END;
 	        END;
 	        n:=i;
-	        if list.fin=n then 
+	        
+	        if list.fin=n then {Caso de insercion na ultima posicion} 
 	        list.item[n]:=item
-	        else BEGIN
-				for i:=list.fin-1 downto n do
+	        else BEGIN {Caso de insercion nunha posicion disttinta na ultima}
+				for i:=list.fin-1 downto n do 
 					list.item[i+1]:=list.item[i];
 			list.item[n]:=item;
 			END;
@@ -268,10 +275,11 @@ Postcondicións:Devolverase so a posición da primeira vez que apareza o centro
 	VAR
 		i,pos:tPosC;
 	BEGIN
+	{Comprobar se a lista esta vacia}
 	if list.fin=0 then findItemC:=NULLC else BEGIN
 		pos:=NULLC;
 		i:=0;
-		repeat
+		repeat{Buscase o item solicitado na lista}
 			i:=i+1;
 			if list.item[i].centername=center then pos:=i;
 		until (list.item[i].centername=center)or(i>list.fin);
@@ -282,4 +290,5 @@ Postcondicións:Devolverase so a posición da primeira vez que apareza o centro
 
 
 END.
+
 
