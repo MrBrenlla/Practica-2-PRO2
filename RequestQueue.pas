@@ -52,8 +52,11 @@ END;
 
 procedure createEmptyQueue(VAR Q:tQueue);
 
-{Crea una cola vacia
- PostCD:La cola queda inicializada y vacia
+{Obxectivo:Crea unha cola vacia
+Entradas: Q, a cola que se desexa inicializar
+Saidas:Q, a cola de entrada xa inicializada
+Precondicions:
+Postcondicións:A cola esta inicializada e vacia
  }
 BEGIN
 	Q.ini:=1;
@@ -62,7 +65,11 @@ END;
 
 
 function isEmptyQueue(Q:tQueue):boolean;
-
+{Obxectivo:Comprobar se a cola esta vacia
+Entradas: Q, a cola a comprobar
+Saidas: un boolean que indica se a cola esta vacia
+Precondicions:A cola esta inicializada
+Postcondicións:}
 	BEGIN
 	isEmptyQueue:=(Q.fin=restaUno(Q.ini));
 END;
@@ -70,7 +77,13 @@ END;
 
 
 function enqueue(VAR Q:tQueue;I:tItemQ):Boolean;
-
+{Obxectivo:Añade un item a cola
+Entradas: Q, a cola a que se vai a añadir un item
+          I, o item a añadir
+Saidas: Q, a cola de entrada co item añadido
+        un boolean que indica o exito ou fracaso da operacion
+Precondicions:A cola esta inicializada
+Postcondicións:}
 BEGIN
 	if Q.fin=restaUno(restaUno(Q.ini)) then enqueue:=FALSE
 	else BEGIN
@@ -83,7 +96,11 @@ END;
 
 
 function front(Q:tQueue):tItemQ;
-
+{Obxectivo: Recupera o primeiro item da cola
+Entradas: Q, a cola da que se vai recuperar o item
+Saidas: O primeiro item da cola
+Precondicions:A cola esta inicializada e non vacia
+Postcondicións:}
 BEGIN
 	front:=Q.item[Q.ini];
 END;
@@ -91,10 +108,15 @@ END;
 
 
 procedure dequeue(VAR Q:tQueue);
-
+{Obxectivo: Elimina o primeiro item da cola
+Entradas: Q, a cola da que se vai eliminar o item
+Saidas: A cola sen o primeiro item
+Precondicions:A cola esta inicializada e non vacia
+Postcondicións:}
 BEGIN
 	Q.ini:=sumaUno(Q.ini);
 END;
 
 
 END.
+
