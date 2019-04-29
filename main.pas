@@ -13,6 +13,14 @@ program main;
 uses sysutils,SharedTypes,RequestQueue,Manager;
 
 procedure CREATE(center,voters:string;VAR manager:tManager);
+{Obxectivo:Añade un novo centro a lista manager
+Entradas: center, o centro a añadir
+          voters, o numero de votantes dese centro
+          manager, a lista na que añadir o centro
+Saidas:manager, a lista co novo centro
+Precondicions:O manager ten que estar inicializado
+Postcondicións:
+ }
 
 BEGIN
 	if insertCenter(center,StrToInt(voters),manager) then
@@ -23,7 +31,13 @@ END;
 
 
 procedure STATS(manager:tManager);
-
+{Obxectivo:Mostra as estadisticas da lista manager
+Entradas: manager, a lista da cal mostrar as estadisticas
+Saidas: mostra por pantalla os centros, os partidos de cada centro, os votos de cada partido,
+        o porcentaxe de votos de cada partido e o procentaxe de participacion de cada centro
+Precondicions:O manager ten que estar inicializado
+Postcondicións:
+ }
 BEGIN
 	showStats(manager);
 END;
@@ -31,6 +45,14 @@ END;
 
 
 procedure VOTES(center,party:string;VAR manager:tManager);
+{Obxectivo:Incrementa en 1 os votos dun partido nun centro
+Entradas: center, o centro ao que pertenece o partido
+          party, o partido ao que se lle incrementa un voto
+          manager, a lista que conten os centros
+Saidas: manager, a lista cos votos actualizados
+Precondicions:O manager ten que estar inicializado
+Postcondicións:
+ }
 begin
  if voteInCenter(center,party,manager) then writeln('* Vote: center ',center,' party ',party)
  else writeln('+ Error: Vote not possible. Party ',party,' not found in center ',center,'. NULLVOTE');
@@ -39,7 +61,14 @@ end;
 
 
 procedure NEW(center:string;party:string;VAR manager:tManager);
-
+{Obxectivo:Añadese a un centro un partido con 0 votos
+Entradas: center, o centro ao que añadir o partido
+          party, o partido a añadir
+          manager, a lista cos centros
+Saidas:manager, a lista actualizada
+Precondicions:manager ten que estar actualizado
+Postcondicións:
+ }
 VAR
 	tmp:boolean;
 	
