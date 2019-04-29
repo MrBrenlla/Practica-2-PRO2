@@ -132,15 +132,13 @@ Postcondicións: devolverase NULL se non hai anterior}
 
 function insertItemC(item:tItemC;VAR list:tlistC):boolean;
 
-{Obxectivo: Engadir un item na lista
+{Obxectivo: Engadir un item na lista de forma ordeada
 Entradas:item, o item a engadir
-         position, a posicion da lista na que se desexa engadir o item
          list, a lista na que se quere engadir o item    
 Saidas: list, a lista de entrada modificada co novo item xa engadido
         un boolean que será verdadeiro se o item se engade correctamente
 Precondicións: A lista ten que estar inicializada
-               a posicion ten que ser unha posición valida ou NULL
-Postcondicións: Todos os elementos que estan despos da posicion na que se introduce poden VARiar de posición}
+Postcondicións: Todos os elementos que estan despos da posicion na que se introduce poden variar de posición}
 
 
 	VAR
@@ -151,6 +149,7 @@ Postcondicións: Todos os elementos que estan despos da posicion na que se intro
 		else if (list.fin=0) then BEGIN
 		list.fin:=1;
 		list.item[1]:=item;	
+		insertItemC:=TRUE;
 		END else
 		BEGIN		
 			list.fin:=list.fin+1;
@@ -176,9 +175,9 @@ Postcondicións: Todos os elementos que estan despos da posicion na que se intro
 				for i:=list.fin-1 downto n do
 					list.item[i+1]:=list.item[i];
 			list.item[n]:=item;
-			END;	
+			END;
+			insertItemC:=TRUE;	
 		END;
-		insertItemC:=TRUE;
 	END;
 
 
@@ -222,14 +221,14 @@ Postcondicións: }
 
 procedure updateListC(L:tList;position:tPosC;VAR list:tListC);
 
-{Obxectivo: modificar o número de votos de un partido sabENDo a posición na lista
-Entradas:votes, o novo número de votos do partido que se atpa nesa posición
-         position, a posicion da lista na que se desexa eliminar o item
-         list, a lista na que se quere modifica o número de votos    
-Saidas: list, a lista de entrada modificada co novo número de votos na posición indicada
-Precondicións: A lista ten que estar inicializada
+{Obxectivo: modificar o lista de partidos de un centro sabendo a posición na lista
+Entradas:L, a nova lista de partidos que se atopa nesa posición
+         position, a posicion da lista na que se desexa modificar o item
+         list, a lista de centros na que se quere modificar a lista de partidos    
+Saidas: list, a lista de entrada modificada ca nova lista de partidos na posición indicada
+Precondicións: A lista de centros ten que estar inicializada
                a posicion ten que ser unha posición valida
-Postcondicións:A orde da lista non se ve modificada }
+Postcondicións: }
 
 
 	BEGIN
@@ -238,8 +237,8 @@ Postcondicións:A orde da lista non se ve modificada }
 
 procedure updateValidVotesC(votes:tNumVotes;position:tPosC;VAR list:tListC);
 
-{Obxectivo: modificar o número de votos validos dun partido sabENDo a posición na lista
-Entradas:votes, o novo número de votos do partido que se atopa nesa posición
+{Obxectivo: modificar o número de votos validos dun centro sabendo a posición na lista
+Entradas:votes, o novo número de votos validos do centro que se atopa nesa posición
          position, a posicion da lista na que se desexa cambiar o item
          list, a lista na que se quere modifica o número de votos    
 Saidas: list, a lista de entrada modificada co novo número de votos na posición indicada
@@ -257,7 +256,7 @@ Postcondicións:A orde da lista non se ve modificada }
 
 function findItemC(center:tCenterName;list:tListC):tPosC;
 
-{Obxectivo: devolver a posición de un centro nunha lista
+{Obxectivo: devolver a posición dun centro nunha lista
 Entradas:center, o centro quese desexa buscar
          list, a lista na que se quere buscar o centro  
 Saidas: un tPosC coa posición do centro que se busca na lista
@@ -283,3 +282,4 @@ Postcondicións:Devolverase so a posición da primeira vez que apareza o centro
 
 
 END.
+
