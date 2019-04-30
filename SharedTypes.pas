@@ -1,8 +1,10 @@
 {
-TITLE: 
-AUTHOR 1: Brais García Brenlla        
-AUTHOR 2: Javier González Rodríguez  
-DATE: 
+TITLE: PROGRAMMING II LABS
+SUBTITLE: Practical 2
+AUTHOR 1: Brais García Brenlla        LOGIN 1: b.brenlla
+AUTHOR 2: Javier González Rodríguez   LOGIN 2: j.gonzalezr
+GROUP: 2.2
+DATE: 03/05/2019
 }
 
 {Aqui atopanse os diversos tipos de variables e constantes que serán utilizadas durante todo o código sen variacións.}
