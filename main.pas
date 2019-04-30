@@ -4,7 +4,7 @@ SUBTITLE: Practical 2
 AUTHOR 1: Brais García Brenlla        LOGIN 1: b.brenlla
 AUTHOR 2: Javier González Rodríguez   LOGIN 2: j.gonzalezr
 GROUP: 2.2
-DATE: 1/04/2019
+DATE: 03/05/2019
 }
 
 
@@ -13,8 +13,8 @@ program main;
 uses sysutils,SharedTypes,RequestQueue,Manager;
 
 procedure CREATE(center,voters:string;VAR manager:tManager);
-{Obxectivo:Añade un novo centro a lista manager
-Entradas: center, o centro a añadir
+{Obxectivo:Añade un novo centro ao manager
+Entradas: center, o centro a engadir
           voters, o numero de votantes dese centro
           manager, a lista na que añadir o centro
 Saidas:manager, a lista co novo centro
@@ -61,13 +61,13 @@ end;
 
 
 procedure NEW(center:string;party:string;VAR manager:tManager);
-{Obxectivo:Añadese a un centro un partido con 0 votos
-Entradas: center, o centro ao que añadir o partido
+{Obxectivo:Añadese a un centro un partido
+Entradas: center, o centro ao que engadir o partido
           party, o partido a añadir
           manager, a lista cos centros
-Saidas:manager, a lista actualizada
+Saidas: o tManger actualizado
 Precondicions:manager ten que estar actualizado
-Postcondicións:
+Postcondicións:O partido terá 0 votos
  }
 VAR
 	tmp:boolean;
