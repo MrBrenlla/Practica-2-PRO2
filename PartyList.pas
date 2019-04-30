@@ -143,10 +143,28 @@ tmp:tPosL;
 	END;
 
 
+function crearNodo(VAR nodo:tPosL):boolean;
+{
+Función auxiliar
+Obxectivo: crear un nodo da lista
+Entradas:nodo, o nodo a crear  
+Saidas: o nodo xa creado
+        un boolean que será verdadeiro se o nodo se crea correctamente
+Postcondicións: O nodo pode non crearese e o programa debolverá FALSE}
+
+
+BEGIN
+	new(nodo);
+	if nodo=NULL then crearNodo:=False
+	else crearNodo:=True;
+end;
+
+
+
 
 function insertItem(item:tItem;VAR list:tlist):boolean;
-
-{Obxectivo: Engadir un item na lista na posición correspondente, tendo en conta a ordenación alfabetica do nome do partido
+{
+Obxectivo: Engadir un item na lista na posición correspondente, tendo en conta a ordenación alfabetica do nome do partido
 Entradas:item, o item a engadir
          list, a lista na que se quere engadir o item    
 Saidas: list, a lista de entrada modificada co novo item xa engadido
@@ -158,47 +176,53 @@ Postcondicións: Todos os elementos que estan despois da posicion na que se intr
 	VAR
 	position,position2,lastpos,tmp2:tPosL;
 	tmp:tItem;
+	tmp3:boolean;
 	BEGIN
 
 		{Insertar item se a lista está vacía}
 		if isEmptyList(list) then BEGIN 
-			new(list);
-			list^.item:=item;
-			list^.next:=NULL;
+			tmp3:=crearNodo(list);
+			if tmp3 then BEGIN
+				list^.item:=item;
+				list^.next:=NULL;
+			end;
 		END
 			
 		{Insertar item se a lista non está vacía}
 		else BEGIN
-			new(tmp2);
-			position:=first(list);
-			tmp:=getItem(position,list);
-			if tmp.partyname>=item.partyname then BEGIN {Se o primeiro elemento xa é maior que o elemento a engadir}
-				tmp2^.next:=list;
-				tmp2^.item:=item;
-				list:=tmp2;
-			END
-			else BEGIN {Se o primeiro non é maior recorrese a lista ata atopar o primeiro que sexa maior que el}
-				lastpos:=last(list);
-				if lastpos^.item.partyname<=item.partyname then BEGIN {Comprobamos se o item a engadir é maior ao último elemento}
-					lastpos^.next:=tmp2;
-					tmp2^.next:=NULL;
+			tmp3:=crearNodo(tmp2);
+			if tmp3 then BEGIN
+				position:=first(list);
+				tmp:=getItem(position,list);
+				if tmp.partyname>=item.partyname then BEGIN {Se o primeiro elemento xa é maior que o elemento a engadir}
+					tmp2^.next:=list;
 					tmp2^.item:=item;
+					list:=tmp2;
 				END
-				else BEGIN {Se o item non é menor que o primeiro ou maior que o ultimo recorrese a lista ata atopar a posición de inserción}
-					position2:=next(position,list);
-					tmp:=getItem(next(position,list),list);
-					while (tmp.partyname<item.partyname) and (position2<>lastpos) do BEGIN 
-						position:=position2;
+				else BEGIN {Se o primeiro non é maior recorrese a lista ata atopar o primeiro que sexa maior que el}
+					lastpos:=last(list);
+					if lastpos^.item.partyname<=item.partyname then BEGIN {Comprobamos se o item a engadir é maior ao último elemento}
+						lastpos^.next:=tmp2;
+						tmp2^.next:=NULL;
+						tmp2^.item:=item;
+					END
+					else BEGIN {Se o item non é menor que o primeiro ou maior que o ultimo recorrese a lista ata atopar a posición de inserción}
 						position2:=next(position,list);
-						tmp:=getItem(position2,list);
+						tmp:=getItem(next(position,list),list);
+						while (tmp.partyname<item.partyname) and (position2<>lastpos) do BEGIN 
+							position:=position2;
+							position2:=next(position,list);
+							tmp:=getItem(position2,list);
+						END;
+						tmp2^.next:=position^.next;
+						position^.next:=tmp2;
+						tmp2^.item:=item;
 					END;
-					tmp2^.next:=position^.next;
-					position^.next:=tmp2;
-					tmp2^.item:=item;
 				END;
 			END;
+			
 		END;
-		insertItem:=TRUE;
+		insertItem:=tmp3;
 	END;
 
 

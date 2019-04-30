@@ -98,7 +98,7 @@ BEGIN
 	if not isEmptyListC(manager) then BEGIN
 		itemC:=getItemC(firstC(manager),manager);
 		while (itemC.validvotes=0) and comprobador do BEGIN {cromprobase o primeiro elemento e eliminase ata que o primeiro teña un número de votos validos diferente de 0, ou no seu defecto ata vaciar a lista}
-			writeln('* Remove: ',itemC.centername);
+			writeln('* Remove: center ',itemC.centername);
 			while not isEmptyList(itemC.partylist) do BEGIN{eliminase a lista de partidos do centro}
 				tmp2:=first(itemC.partylist);
 				deleteAtPosition(tmp2,itemC.partylist);
@@ -114,7 +114,7 @@ BEGIN
 				tmp:=nextC(position,manager);
 				itemC:=getItemC(tmp,manager);
 				if (itemC.validvotes=0)  then BEGIN
-					writeln('* Remove: ',itemC.centername);
+					writeln('* Remove: center ',itemC.centername);
 					while not isEmptyList(itemC.partylist) do BEGIN
 						tmp2:=first(itemC.partylist);
 						deleteAtPosition(tmp2,itemC.partylist);
@@ -256,7 +256,8 @@ END;
 
 procedure stat(list:tList;totalvoters:integer;center:string);
 
-{
+{Función auxiliar
+Función 
 Obxectivo: Mostrar por pantalla numero de votos e porcentaxe de votos por partido e en total da lista de partido de un centro
 Entradas: list, é a lista da que se desexan ver os datos
 		  totalvoters, o número total de votantes que hai no censo
